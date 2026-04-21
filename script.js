@@ -72,13 +72,6 @@ mapLegend.onAdd = function (map) {
 //add legend to map
 mapLegend.addTo(map);
 
-// create Open Street Map Layer from url
-const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  // proper attribution
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-// add OSM layer to the map layer
-}).addTo(map);
-
 // create Consortium of Ancient World Mappers layer (better for a map of the ancient world)
 const overlay = L.tileLayer('https://cawm.lib.uiowa.edu/tiles/{z}/{x}/{y}.png', {
   // proper attribution
