@@ -72,6 +72,13 @@ mapLegend.onAdd = function (map) {
 //add legend to map
 mapLegend.addTo(map);
 
+// create Open Street Map Layer from url
+const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  // proper attribution
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+// add OSM layer to the map layer
+}).addTo(map);
+
 // create Consortium of Ancient World Mappers layer (better for a map of the ancient world)
 const overlay = L.tileLayer('https://cawm.lib.uiowa.edu/tiles/{z}/{x}/{y}.png', {
   // proper attribution
@@ -121,19 +128,7 @@ const starIcon = L.icon({
 
 // html for Chalcedon Marker
 const chalcedonMarkerText = `
-<p class="see_title"><strong><a href="https://pleiades.stoa.org/places/520988" target="_blank">Chalcedon</a> (Bithynia)</strong></p>
-Attested Bishops:
-<ul class="bishops">
-  <li>Home Synod of Constantinople, November 448: 
-  <ul class="bishops">
-    <li>Eulalius</li>
-  </ul></li>
-  <li>Chalcedon, 451: 
-  <ul class="bishops">
-    <li>Eleutherius</li>
-  </ul></li>
-</ul>
-`
+<p class="see_title">Eleutherius of <a href="https://pleiades.stoa.org/places/520988" target="_blank">Chalcedon</a> (Bithynia)</p>`
 
 // create marker for Chalcedon
 const chalcedon = L.marker([40.98349941, 29.02592996], {
@@ -142,7 +137,7 @@ const chalcedon = L.marker([40.98349941, 29.02592996], {
   // bring star to the top
   zIndexOffset: 1000,
   // give title for compatibility with search bar
-  title: "Chalcedon (Bithynia)"
+  title: "Eleutherius of Chalcedon (Bithynia)"
 // give the point a popup and add it to the map
 }).bindPopup(chalcedonMarkerText).addTo(map);
 
@@ -209,7 +204,7 @@ Object.entries(provinces).forEach(([dioceseName, provinceArray]) => {
     // create layer object from geoJSON data
     const provinceSees = L.geoJSON(geojsonFeature, {
       // filter data using a function: if province matches and see isn't chalcedon
-      filter: (f) => f.properties.province === currentProvince && f.properties.see !== "Chalcedon",
+      filter: (f) => f.properties.province === currentProvince && f.properties.see !== "Chalcedon" && f.properties.Ch,
       /*  pointToLayer determines how points in a geoJSON feature show up on the map. 
           it wants a function that returns a marker object
       */      
@@ -228,7 +223,7 @@ Object.entries(provinces).forEach(([dioceseName, provinceArray]) => {
         // create marker with icon and title (for search bar)
         const marker = L.marker(latlng, {
             icon: icon,
-            title: feature.properties.see + " (" + feature.properties.province + ")"
+            title: feature.properties.Ch + " of " + feature.properties.see + " (" + feature.properties.province + ")"
         });        
         // add point to the subgroup
         provinceSubGroup.addLayer(marker);        
@@ -239,36 +234,10 @@ Object.entries(provinces).forEach(([dioceseName, provinceArray]) => {
       onEachFeature: (feature, layer) => {
         let popupTxt;
         if (feature.properties.pleiades === null) {
-          popupTxt = `<p class="see_title"><strong>${feature.properties.see} (${feature.properties.province})</strong></p>`
+          popupTxt = `<p class="see_title">${feature.properties.Ch} of ${feature.properties.see} (${feature.properties.province})</p>`
         } else {
-          popupTxt = `<p class="see_title"><strong><a href="${feature.properties.pleiades}" target="_blank">${feature.properties.see}</a> (${feature.properties.province})</strong></p>`
+          popupTxt = `<p class="see_title">${feature.properties.Ch} of <a href="${feature.properties.pleiades}" target="_blank">${feature.properties.see}</a> (${feature.properties.province})</p>`
         }
-        popupTxt += `Attested Bishops:<ul class="bishops">`
-        if (feature.properties.E431) {
-          popupTxt += `<li>First Council of Ephsesus, 431: <ul class="bishops"><li>${feature.properties.E431}</li></ul></li>`
-        };
-        if (feature.properties.A445) {
-          popupTxt += `<li>Council of Antioch, 445: <ul class="bishops"><li>${feature.properties.A445}</li></ul></li>`
-        };
-        if (feature.properties.A448) {
-          popupTxt += `<li>Council of Antioch, Eastertide, 448: <ul class="bishops"><li>${feature.properties.A448}</li></ul></li>`
-        };
-        if (feature.properties.C448) {
-          popupTxt += `<li>Home Synod of Constantinople, November 448: <ul class="bishops"><li>${feature.properties.C448}</li></ul></li>`
-        };
-        if (feature.properties.TB449) {
-          popupTxt += `<li>Council of Tyre-Berytus, February 449: <ul class="bishops"><li>${feature.properties.TB449}</li></ul></li>`
-        };
-        if (feature.properties.C449) {
-          popupTxt += `<li>Hearings at Constantinople, April 449: <ul class="bishops"><li>${feature.properties.C449}</li></ul></li>`
-        };
-        if (feature.properties.E449) {
-          popupTxt += `<li>Second Council of Ephsesus, August 449: <ul class="bishops"><li>${feature.properties.E449}</li></ul></li>`
-        };
-        if (feature.properties.Ch) {
-          popupTxt += `<li>Chalcedon, 451: <ul class="bishops"><li>${feature.properties.Ch}</li></ul></li>`
-        };
-        popupTxt += `</ul>`;
         // apply popup to marker
         layer.bindPopup(popupTxt);
       }});
@@ -343,7 +312,7 @@ var searchBar = L.control.pinSearch({
     });
     },
   // set searchbar size and max search results
-  searchBarWidth: '200px',
+  searchBarWidth: '250px',
   searchBarHeight: '30px',
   maxSearchResults: 10
 // add to the map
