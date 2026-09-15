@@ -1,5 +1,5 @@
 <!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
-<qgis version="3.32.2-Lima">
+<qgis version="4.2.1-Belém do Pará">
   <identifier></identifier>
   <parentidentifier></parentidentifier>
   <language></language>

@@ -1,7 +1,19 @@
 //HTML for splash info & legend
 const infoHTML = `
 <h2>The Acts of the Council of Chalcedon</h2>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean lobortis et mi a pulvinar. Vestibulum pellentesque nunc vitae lorem commodo, at interdum libero aliquet. Proin efficitur turpis id libero imperdiet commodo. Quisque vitae ornare magna. Nullam congue consectetur est, ac finibus enim. Vivamus quis lectus erat. Integer lacus felis, facilisis at tellus ut, blandit rutrum purus. Duis eget sem augue. Nam ullamcorper risus odio. Maecenas ornare hendrerit sem, nec convallis arcu mattis non. Sed eget mauris sed mauris semper volutpat. Vestibulum dapibus aliquam sem eget mattis.
+<p>This interactive map depicts the attendance of the Council of Chalcedon, summoned by Emperor Marcian in 451 AD. The Council of Chalcedon is one of the best-documented events in the history of the early church.</p>
+<p><strong>User Guide:</strong>
+<ul>
+<li>Attendees are shown individually; where they cluster, a numbered circle indicates the count.</li>
+<li>Metropolitan and patriarchal sees are represented by points crowned with Latin crosses and patriarchal crosses respectively.</li>
+<li>Hollow circles represent bishops representing unlocated sees.</li>
+<li>Click on a point to learn the name of the bishop that attended, the see's Diocese and Province, and a link to the Pleiades place.</li>
+<li>Use the layers button in the top right corner to filter sees by Diocese and Province. Press “Sees (by Diocese and Province)” to unselect all.</li>
+<li>Use the search bar in the top left corner to search points by bishop or see.</li>
+</ul>
+<p>&copy; Ancient World Mapping Center 2026</p>
+<p><a href="https://creativecommons.org/licenses/by-nc/4.0/deed.en" target="_blank">CC-BY-NC 4.0</a><br>
+<a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank">GPL-3.0</a></p>
 `;
 const legendHTML = `
 <h2>Legend</h2><br>
@@ -49,8 +61,9 @@ L.popup([37, 28],{
   autoPan: true,
   //adjust width
   maxWidth: 500,
-  //padding for when brought back into frame
-  autoPanPadding: [250, 250]
+  //padding and offset to keep popup in view
+  autoPanPadding: [50, 50],
+  offset: [0, 200]
 //add to map
 }).openOn(map);
 
@@ -284,7 +297,7 @@ var searchBar = L.control.pinSearch({
   // which function to run when a search happens
   onSearch: function(query) {    
     // if Chalcedon was searched for
-    if (chalcedon.options.title === query) {
+    if (chalcedon.options.title === query && map.hasLayer(chalcedon)) {
       // zoom to Chalcedon and open its popup  
       map.setView(chalcedon.getLatLng());
       chalcedon.openPopup();
