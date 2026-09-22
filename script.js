@@ -1,15 +1,15 @@
 //HTML for splash info & legend
 const infoHTML = `
 <h2>The Acts of the Council of Chalcedon</h2>
-<p>This interactive map depicts the attendance of the Council of Chalcedon, summoned by Emperor Marcian in 451 AD. The Council of Chalcedon is one of the best-documented events in the history of the early church.</p>
+<p>This interactive map depicts the home sees of bishops who attended the Council of Chalcedon, summoned by Emperor Marcian in 451 AD. The largest of the early ecumenical councils, Chalcedon marked an important turning point in Christological debates. </p>
 <p><strong>User Guide:</strong>
 <ul>
 <li>Attendees are shown individually; where they cluster, a numbered circle indicates the count.</li>
-<li>Metropolitan and patriarchal sees are represented by points crowned with Latin crosses and patriarchal crosses respectively.</li>
-<li>Hollow circles represent bishops representing unlocated sees.</li>
-<li>Click on a point to learn the name of the bishop that attended, the see's Diocese and Province, and a link to the Pleiades place.</li>
-<li>Use the layers button in the top right corner to filter sees by Diocese and Province. Press “Sees (by Diocese and Province)” to unselect all.</li>
-<li>Use the search bar in the top left corner to search points by bishop or see.</li>
+<li>Metropolitan and patriarchal sees are represented by points crowned with Latin crosses and patriarchal crosses, respectively. </li>
+<li>Hollow circles represent bishops from sees whose location is unknown. </li>
+<li>Click on a point to learn the name of the bishop that attended, the see’s Diocese and Province, and a link to the associated record in the Pleiades Gazetteer. </li>
+<li>Use the layers button in the top right corner to filter sees by Diocese and Province. Press “Sees (by Diocese and Province)” to unselect all. </li>
+<li>Use the search bar in the top left corner to search points by bishop or see. </li>
 </ul>
 <p>&copy; Ancient World Mapping Center 2026</p>
 <p><a href="https://creativecommons.org/licenses/by-nc/4.0/deed.en" target="_blank">CC-BY-NC 4.0</a><br>
