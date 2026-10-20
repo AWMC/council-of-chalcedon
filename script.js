@@ -299,7 +299,12 @@ var searchBar = L.control.pinSearch({
   // which function to run when a search happens
   onSearch: function(query) {    
     // if Chalcedon was searched for
-    if (chalcedon.options.title === query && map.hasLayer(chalcedon)) {
+    if (chalcedon.options.title === query) {
+      // if chalcedon is not already on the map
+      if (!map.hasLayer(chalcedon)) {
+        // add it
+        chalcedon.addTo(map);
+      }
       // zoom to Chalcedon and open its popup  
       map.setView(chalcedon.getLatLng());
       chalcedon.openPopup();
