@@ -1,13 +1,13 @@
 //HTML for splash info & legend
 const infoHTML = `
 <h2>The Acts of the Council of Chalcedon</h2>
-<p>This interactive map depicts the home sees of bishops who attended the Council of Chalcedon, summoned by Emperor Marcian in 451 AD. The largest of the early ecumenical councils, Chalcedon marked an important turning point in Christological debates. </p>
+<p>This interactive map depicts the home sees of bishops who attended the Council of Chalcedon, summoned by Emperor Marcian in 451 CE. The largest of the early ecumenical councils, Chalcedon marked an important turning point in Christological debates. </p>
 <p><strong>User Guide:</strong>
 <ul>
 <li>Attendees are shown individually; where they cluster, a numbered circle indicates the count.</li>
 <li>Metropolitan and patriarchal sees are represented by points crowned with Latin crosses and patriarchal crosses, respectively. </li>
-<li>Hollow circles represent bishops from sees whose location is unknown. </li>
-<li>Click on a point to learn the name of the bishop that attended, the see’s Diocese and Province, and a link to the associated record in the Pleiades Gazetteer. </li>
+<li>Bishops from sees whose location is unknown are represented by hollow circles and placed in the approximate center of their province. </li>
+<li>Click on a point to learn the name of the bishop that attended, the see's Diocese and Province, and a link to the associated record in the Pleiades Gazetteer. </li>
 <li>Use the layers button in the top right corner to filter sees by Diocese and Province. Press “Sees (by Diocese and Province)” to unselect all. </li>
 <li>Use the search bar in the top left corner to search points by bishop or see. </li>
 </ul>
@@ -16,12 +16,14 @@ const infoHTML = `
 <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" target="_blank">GPL-3.0</a></p>
 `;
 const legendHTML = `
-<h2>Legend</h2><br>
-Chalcedon: <img src="./Icons/starIcon.png" style="vertical-align: middle; width: auto; height: auto;"><br><br>
-Sees: <img src="./Icons/seeIcon.png" style="vertical-align: middle; width: auto; height: auto;"><br><br>
-Metropolitan Sees: <img src="./Icons/metropolisIcon.png" style="vertical-align: -4.5px; width: auto; height: auto;"><br><br>
-Patriarchal Sees: <img src="./Icons/patriarchalIcon.png" style="vertical-align: -4.5px; width: auto; height: auto;"><br><br>
-Unlocated Sees: <img src="./Icons/unlocatedIcon.png" style="vertical-align: middle; width: auto; height: auto;">
+<h2>Legend</h2>
+<ul class="legendList">
+  <li>Chalcedon: <img src="./Icons/starIcon.png" style="vertical-align: middle; width: auto; height: auto;"></li>
+  <li>Sees: <img src="./Icons/seeIcon.png" style="vertical-align: middle; width: auto; height: auto;"></li>
+  <li>Metropolitan Sees: <img src="./Icons/metropolisIcon.png" style="vertical-align: middle; width: auto; height: auto;"></li>
+  <li>Patriarchal Sees: <img src="./Icons/patriarchalIcon.png" style="vertical-align: middle; width: auto; height: auto;"></li>
+  <li>Unlocated Sees: <img src="./Icons/unlocatedIcon.png" style="vertical-align: middle; width: auto; height: auto;"></li>
+</ul>
 `;
 
 // get data from geoJSON file
@@ -307,20 +309,22 @@ var searchBar = L.control.pinSearch({
     provinceLayers.forEach(diocese => {
       // and through each province
       diocese.children.forEach(provinceObj => {
-        const subGroup = provinceObj.layer;      
-        // Check if the subgroup is actually on the map
-        if (map.hasLayer(subGroup)) {
-          // go through each marker in the layer
-          subGroup.eachLayer(marker => {
-            // Check if the marker title matches the search query
-            if (marker.options.title === query) {   
-              // zoom to the point and ope its popup
-              allSeesCluster.zoomToShowLayer(marker, function() {
-                  marker.openPopup();
-              });
-            }
-          });
-        }
+        const subGroup = provinceObj.layer;   
+        // go through each marker in the layer
+        subGroup.eachLayer(marker => {
+          // Check if the marker title matches the search query
+          if (marker.options.title === query) {  
+            // if marker is not already on the map
+            if (!map.hasLayer(subGroup)) {
+              // add the marker and the rest of its province
+              subGroup.addTo(map);
+            } 
+            // zoom to the point and ope its popup
+            allSeesCluster.zoomToShowLayer(marker, function() {
+                marker.openPopup();
+            });
+          }
+        });
       });
     });
     },
