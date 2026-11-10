@@ -1,6 +1,6 @@
 //HTML for splash info & legend
 const infoHTML = `
-<h2>The Acts of the Council of Chalcedon</h2>
+<h2>The Council of Chalcedon</h2>
 <p>This interactive map depicts the home sees of bishops who attended the Council of Chalcedon, summoned by Emperor Marcian in 451 CE. The largest of the early ecumenical councils, Chalcedon marked an important turning point in Christological debates. </p>
 <p><strong>User Guide:</strong>
 <ul>
